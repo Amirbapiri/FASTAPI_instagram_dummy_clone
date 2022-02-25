@@ -7,11 +7,13 @@ from db.database import engine
 # registering routers
 from routers.user import router as user_router
 from routers.post import router as post_router
+from auth.authentication import router as auth_router
 
 app = FastAPI()
 
 
 app.include_router(user_router)
+app.include_router(auth_router)
 app.include_router(post_router)
 
 

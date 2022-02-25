@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from schemas.user import user_schema
 from sqlalchemy.orm import Session
 
@@ -14,4 +15,14 @@ def create_user(db: Session, request: user_schema.UserBaseSchema):
     db.add(user)
     db.commit()
     db.refresh(user)
+    return user
+
+
+def get_user_by_username(db: Session, username: str):
+    user = db.query(User).filter(User.username == username)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with username {username} doesn't exist",
+        )
     return user

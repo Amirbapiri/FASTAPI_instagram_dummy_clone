@@ -13,3 +13,9 @@ class UserDisplay(UserBaseSchema):
 
     class Config:
         orm_mode = True
+
+
+class UserAuth(BaseModel):
+    id: int
+    username: str
+    email: str

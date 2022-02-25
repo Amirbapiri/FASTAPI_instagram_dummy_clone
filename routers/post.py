@@ -1,10 +1,12 @@
+import shutil
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from db.database import get_db
 from schemas.post.post_schema import PostDisplay, PostCreate
 from services.post import post_db
+from utils.filename_generator import generate_random_string
 
 
 router = APIRouter(prefix="/post", tags=["post"])
@@ -26,3 +28,13 @@ def create_post(request: PostCreate, db: Session = Depends(get_db)):
 @router.get("/all", response_model=List[PostDisplay])
 def get_posts(db: Session = Depends(get_db)):
     return post_db.get_posts(db)
+
+
+@router.post("/image/upload")
+def upload_image(image: UploadFile = File(...)):
+    filename = generate_random_string(image.filename)
+    upload_to = f"images/{filename}"
+
+    with open(upload_to, "w+b") as buffer:
+        shutil.copyfileobj(image.file, buffer)
+    return {"filename": upload_to}

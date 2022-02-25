@@ -19,3 +19,10 @@ def create_post(db: Session, request: PostCreate):
     db.commit()
     db.refresh(post)
     return post
+
+
+def get_posts(db: Session):
+    """
+    This method returns all posts back
+    """
+    return db.query(Post).all()

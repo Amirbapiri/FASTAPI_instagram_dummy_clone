@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -20,3 +21,8 @@ def create_post(request: PostCreate, db: Session = Depends(get_db)):
             detail="Parameter image_url_type can only take values 'absolute' or 'relative'",
         )
     return post_db.create_post(db, request)
+
+
+@router.get("/all", response_model=List[PostDisplay])
+def get_posts(db: Session = Depends(get_db)):
+    return post_db.get_posts(db)

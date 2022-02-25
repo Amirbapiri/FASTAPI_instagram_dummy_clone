@@ -1,4 +1,8 @@
 fastapi
 uvicorn
+bcrypt
+sqlalchemy
+passlib
 aiofiles
 python-multipart
+python-jose
